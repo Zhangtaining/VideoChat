@@ -15,7 +15,7 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Live Chat
+          Live Meeting App
         </a>
       </header>
     </div>
