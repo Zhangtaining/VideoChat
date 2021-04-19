@@ -4,11 +4,17 @@ import {
   Link,
   Route,
   Switch,
+  Redirect,
 } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import SignInComponent from './component/SignIn.component';
 import SignUpComponent from './component/SignUp.component';
+import MainPannel from './component/MainPannel';
+import ClassComponent from './component/class.component';
+import ClassRoomComponent from './component/classroom.component';
+
+const loggedIn = false;
 
 function App() {
   return (<Router>
@@ -30,13 +36,32 @@ function App() {
       </nav>
 
       <div className="auth-wrapper">
-        <div className="auth-inner">
           <Switch>
-            <Route exact path='/' component={SignInComponent} />
-            <Route path="/sign-in" component={SignInComponent} />
-            <Route path="/sign-up" component={SignUpComponent} />
+            <Route exact path='/'>
+              <div className="auth-inner">
+                <SignInComponent />
+              </div>
+            </Route>
+            <Route path="/sign-in">
+              <div className="auth-inner">
+                <SignInComponent />
+              </div>
+            </Route>
+            <Route path="/sign-up" component={SignUpComponent}>
+              <div className="auth-inner">
+                <SignUpComponent />
+              </div>
+            </Route>
+            <Route path="/home">
+              {!loggedIn ? <Redirect to="/sign-in" /> : <MainPannel /> }
+            </Route>
+            <Route path="/class">
+              {loggedIn ? <Redirect to="/sign-in" /> : <ClassComponent /> }
+            </Route>
+            <Route path="/classroom/:RoomID">
+              <ClassRoomComponent />
+            </Route>
           </Switch>
-        </div>
       </div>
     </div></Router>);
 }
