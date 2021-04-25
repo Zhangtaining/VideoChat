@@ -2,6 +2,8 @@ const { Socket } = require('dgram')
 const express = require('express')
 const app = express()
 const server = require('http').Server(app)
+var { graphqlHTTP } = require('express-graphql');
+var {SCHEMA} = require('./graphql_schema/schema')
 const io = require('socket.io')(
     server,
     {
@@ -12,11 +14,11 @@ const io = require('socket.io')(
     }
 )
 const { v4: uuidV4} = require('uuid')
-var cors = require('cors')
+// var cors = require('cors')
 
 app.set('view engine', 'ejs')
-app.use(cors())
-
+// app.use(cors())
+app.use(express.static('public'))
 app.get('/', (req, res) => {
     res.redirect(`/${uuidV4()}`)
 })
@@ -38,5 +40,20 @@ io.on('connection', socket => {
     })
 
 })
+
+// Graphql resolver provides below
+var root = {
+    hello: () => {
+        return "Hello World";
+    }
+}
+
+// Graphql server starts here
+app.use('/graphql', graphqlHTTP({
+    schema: SCHEMA,
+    rootValue: root,
+    graphiql: true,
+  }));
+
 
 server.listen(5000)
