@@ -4,7 +4,23 @@ directive @specifiedBy(
   url: String!
 ) on SCALAR
 
+type AuthPayload {
+  token: String
+  user: User
+}
+
+type Mutation {
+  signup(email: String!, password: String!, name: String!): AuthPayload
+  login(email: String!, password: String!): AuthPayload
+}
+
 type Query {
   hello: String
+}
+
+type User {
+  id: ID!
+  name: String!
+  email: String!
 }
 

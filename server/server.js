@@ -1,9 +1,9 @@
-const { Socket } = require('dgram')
-const express = require('express')
+import express from 'express';
 const app = express()
 const server = require('http').Server(app)
-var { graphqlHTTP } = require('express-graphql');
-var {SCHEMA} = require('./graphql_schema/schema')
+import { graphqlHTTP } from 'express-graphql';
+import { SCHEMA } from './graphql_schema/schema';
+import mutation from './resolvers/mutation';
 const io = require('socket.io')(
     server,
     {
@@ -13,20 +13,10 @@ const io = require('socket.io')(
         }
     }
 )
-const { v4: uuidV4} = require('uuid')
-// var cors = require('cors')
+import { v4 as uuidV4 } from 'uuid';
+import cors from 'cors';
 
 app.set('view engine', 'ejs')
-// app.use(cors())
-app.use(express.static('public'))
-app.get('/', (req, res) => {
-    res.redirect(`/${uuidV4()}`)
-})
-
-app.get('/:room', (req, res) => {
-    res.render('room', {roomId: req.params.room})
-})
-
 
 io.on('connection', socket => {
     console.log("new user joined!!!!")
@@ -44,11 +34,21 @@ io.on('connection', socket => {
 // Graphql resolver provides below
 var root = {
     hello: () => {
+        console.log("hello world !!!!!!!!!!!");
         return "Hello World";
-    }
+    },
+    signup: () => {
+        console.log("trying to sign up...");
+        return mutation.signup();
+    },
+    login: () => {
+        console.log("trying to loggin ...");
+        return mutation.login();
+    },
 }
 
 // Graphql server starts here
+app.use(cors())
 app.use('/graphql', graphqlHTTP({
     schema: SCHEMA,
     rootValue: root,
