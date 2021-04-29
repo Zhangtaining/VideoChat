@@ -1,9 +1,30 @@
 import React, { Component } from 'react'
+import { commitUserLoginMutation } from '../mutations/UserLoginMutation'
+import {GC_USER_ID, GC_AUTH_TOKEN} from '../constants'
+import RelayEnvironment from '../RelayEnvironment';
 
 export default class SignInComponent extends Component {
+    _confirm = async () => {
+        console.log(">>>>>>>>>>>>>>>>>>>>");
+        commitUserLoginMutation(
+            RelayEnvironment,
+            'test@test.com',
+            '12345678',
+            (token, userid) => {
+                this._saveUserData(userid, token);
+                this.props.history.push('/home')
+            }
+        );
+    };
+
+    _saveUserData = (id, token) => {
+        localStorage.setItem(GC_USER_ID, id)
+        localStorage.setItem(GC_AUTH_TOKEN, token)
+    }
+
     render() {
         return (
-            <form>
+            <div className="auth-inner">
                 <h3>Sign In</h3>
 
                 <div className="form-group">
@@ -23,11 +44,8 @@ export default class SignInComponent extends Component {
                     </div>
                 </div>
 
-                <button type="submit" className="btn btn-primary btn-block">Submit</button>
-                {/* <p className="forgot-password text-right">
-                    Forgot <a href="#">password?</a>
-                </p> */}
-            </form>
+                <button type="submit" className="btn btn-primary btn-block" onClick={() => this._confirm()}>Submit</button>
+            </div>
         );
     }
 }
