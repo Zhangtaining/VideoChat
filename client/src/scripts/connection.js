@@ -1,5 +1,5 @@
 import openSocket from 'socket.io-client'
-//const videoGrid = document.getElementById('video-grid')
+const videoGrid = document.getElementById('video-grid')
 
 function initSocketConnection() {
     return openSocket(

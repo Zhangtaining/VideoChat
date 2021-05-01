@@ -5,7 +5,6 @@ import RelayEnvironment from '../RelayEnvironment';
 
 export default class SignInComponent extends Component {
     _confirm = async () => {
-        console.log(">>>>>>>>>>>>>>>>>>>>");
         commitUserLoginMutation(
             RelayEnvironment,
             'test@test.com',
@@ -24,27 +23,22 @@ export default class SignInComponent extends Component {
 
     render() {
         return (
-            <div className="auth-inner">
-                <h3>Sign In</h3>
+            <div id="hero">
+                <div className="auth-inner">
+                    <h1 className="mb-4 pb-0">Sign In</h1>
 
-                <div className="form-group">
-                    <label>Email address</label>
-                    <input type="email" className="form-control" placeholder="Enter email" />
-                </div>
-
-                <div className="form-group">
-                    <label>Password</label>
-                    <input type="password" className="form-control" placeholder="Enter password" />
-                </div>
-
-                <div className="form-group">
-                    <div className="custom-control custom-checkbox">
-                        <input type="checkbox" className="custom-control-input" id="customCheck1" />
-                        <label className="custom-control-label" htmlFor="customCheck1">Remember me</label>
+                    <div className="form-group">
+                        <br />
+                        <input type="email" className="form-control" placeholder="Enter email" />
                     </div>
-                </div>
 
-                <button type="submit" className="btn btn-primary btn-block" onClick={() => this._confirm()}>Submit</button>
+                    <div className="form-group">
+                        <br />
+                        <input type="password" className="form-control" placeholder="Enter password" />
+                    </div>
+                    <br />
+                    <button class="log-in" onClick={() => this._confirm()}>Log In</button>
+                </div>
             </div>
         );
     }
