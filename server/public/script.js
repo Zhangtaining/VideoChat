@@ -47,7 +47,6 @@ function connectToNewUser(userId, stream) {
 
 }
 
-
 socket.on('user-connected', userId => {
     console.log('User connected' + userId)
 })
