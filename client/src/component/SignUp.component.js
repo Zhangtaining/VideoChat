@@ -3,31 +3,34 @@ import React, { Component } from 'react'
 export default class SignUpComponent extends Component {
     render() {
         return (
-            <form>
-                <h3>Sign Up</h3>
+            <div id="hero">
+                <div className="auth-inner">
+                    <h1 className="mb-4 pb-0">Sign Up</h1>
 
-                <div className="form-group">
-                    <label>First name</label>
-                    <input type="text" className="form-control" placeholder="First name" />
+                    <div className="form-group">
+                        <br/>
+                        <input type="text" className="form-control" placeholder="User Name" />
+                    </div>
+
+                    <div className="form-group">
+                        <br />
+                        <input type="email" className="form-control" placeholder="Enter email" />
+                    </div>
+
+                    <div className="form-group">
+                        <br />
+                        <input type="password" className="form-control" placeholder="Enter password" />
+                    </div>
+
+                    <div className="form-group">
+                        <br />
+                        <input type="password" className="form-control" placeholder="Confirm password" />
+                    </div>
+
+                    <br />
+                    <button class="log-in">Sign Up</button>
                 </div>
-
-                <div className="form-group">
-                    <label>Last name</label>
-                    <input type="text" className="form-control" placeholder="Last name" />
-                </div>
-
-                <div className="form-group">
-                    <label>Email address</label>
-                    <input type="email" className="form-control" placeholder="Enter email" />
-                </div>
-
-                <div className="form-group">
-                    <label>Password</label>
-                    <input type="password" className="form-control" placeholder="Enter password" />
-                </div>
-
-                <button type="submit" className="btn btn-primary btn-block">Sign Up</button>
-            </form>
+            </div>
         );
     }
 }

@@ -21,18 +21,22 @@ import {
   usePreloadedQuery,
 } from 'react-relay/hooks';
 import RelayEnvironment from './RelayEnvironment';
-import { GC_USER_ID } from './constants'
+import { GC_USER_ID } from './constants';
+import Layout from './layout/Layout';
+import Header from './layout/Header';
+import Footer from './layout/Footer';
+import Welcome from './component/Welcome.component';
 
 const { Suspense } = React;
 
 // Define a query
-const AppQuery = graphql`
-  query AppQuery {
-    hello
-  }
-`;
+// const AppQuery = graphql`
+//   query AppQuery {
+//     hello
+//   }
+// `;
 
-const preloadQuery = loadQuery(RelayEnvironment, AppQuery, {});
+// const preloadQuery = loadQuery(RelayEnvironment, AppQuery, {});
 
 
 function _isLoggedIn() {
@@ -40,54 +44,43 @@ function _isLoggedIn() {
   return user_id
 }
 
-function App(props) {
-  const data = usePreloadedQuery(AppQuery, props.preloadedQuery);
+function App() {
   return (<Router>
-    <div className="App">
-      <nav className="navbar navbar-expand-lg navbar-light fixed-top">
-        <div className="container">
-          <Link className="navbar-brand" to={"/sign-in"}>{data.hello}</Link>
-          <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
-            <ul className="navbar-nav ml-auto">
-              <li className="nav-item">
-                <Link className="nav-link" to={"/sign-in"}>Login</Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to={"/sign-up"}>Sign up</Link>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-
-      <div className="auth-wrapper">
-          <Switch>
-            <Route exact path='/' component={SignInComponent}/>
-            <Route path="/sign-in" component={SignInComponent}/>
-            <Route path="/sign-up" >
-              <div className="auth-inner">
-                <SignUpComponent />
-              </div>
-            </Route>
-            <Route path="/home">
-              {!_isLoggedIn() ? <Redirect to="/sign-in" /> : <MainPannel /> }
-            </Route>
-            <Route path="/class">
-              {!_isLoggedIn() ? <Redirect to="/sign-in" /> : <ClassComponent /> }
-            </Route>
-            <Route path="/classroom/:RoomID">
-              <ClassRoomComponent />
-            </Route>
-          </Switch>
-      </div>
-    </div></Router>);
+    <div>  
+        <div id="wrapper">   
+            <div id="content-wrapper" class="d-flex flex-column">  
+                <div id="content">  
+                    <Header />  
+                    <Switch>
+                      <Route exact path='/' component={Welcome}/>
+                      <Route path="/sign-in" component={SignInComponent}/>
+                      <Route path="/sign-up" >
+                        <div className="auth-inner">
+                          <SignUpComponent />
+                        </div>
+                      </Route>
+                      <Route path="/home">
+                        {!_isLoggedIn() ? <Redirect to="/sign-in" /> : <MainPannel /> }
+                      </Route>
+                      <Route path="/class">
+                        {!_isLoggedIn() ? <Redirect to="/sign-in" /> : <ClassComponent /> }
+                      </Route>
+                      <Route path="/classroom/:RoomID">
+                        <ClassRoomComponent />
+                      </Route>
+                    </Switch> 
+                </div>  
+            </div>  
+        </div>  
+    </div>
+</Router>);
 }
 
 function AppRoot() {
   return (
     <RelayEnvironmentProvider environment={RelayEnvironment}>
       <Suspense fallback={'Loading...'}>
-        <App preloadedQuery={preloadQuery} />
+        <App />
       </Suspense>
     </RelayEnvironmentProvider>
   );

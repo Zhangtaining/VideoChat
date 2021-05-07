@@ -1,9 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import AOS from 'aos';
 import './index.css';
 import AppRoot from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom'
+import 'bootstrap/dist/css/bootstrap.min.css'; 
+
+AOS.init();
 
 ReactDOM.render(
   <BrowserRouter>

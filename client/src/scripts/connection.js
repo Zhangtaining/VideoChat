@@ -1,5 +1,5 @@
 import openSocket from 'socket.io-client'
-//const videoGrid = document.getElementById('video-grid')
+import Peer from 'peerjs'
 
 function initSocketConnection() {
     return openSocket(
@@ -13,68 +13,86 @@ function initSocketConnection() {
     )
 }
 
-// const myPeer = new Peer(undefined, {
-//     host: '/',
-//     port: '3001'
-// })
+function initPeerConnection() {
+    return new Peer(undefined, {
+        host: '/',
+        port: '3001'
+    })
+}
 
-// const myVideo = document.createElement('video')
-// myVideo.muted = true
-// const peers = {}
-// navigator.mediaDevices.getUserMedia({
-//     video: true,
-//     audio: true
-// }).then(stream => {
-//     addVideoStream(myVideo, stream)
+class Connection {
+    socket;
+    myPeer;
+    peers = {}
+    constructor () {
+        this.socket = initSocketConnection();
+        this.myPeer = initPeerConnection();
+    };
 
-//     myPeer.on('call', call => {
-//         call.answer(stream)
-//         const video = document.createElement('video')
-//         call.on('stream', userVideoStream => {
-//             addVideoStream(video, userVideoStream)
-//         })
-//     })
+    setUpConnection = () => {
+        console.log(document);
+        this.showMyOwnVideo();
 
-//     socket.on('user-connected', userId => {
-//         connectToNewUser(userId, stream)
-//     })
+        this.myPeer.on('open', id => {
+            this.socket.emit('join-room', 123, id)
+        })
 
-//     socket.on('user-disconnected', userId => {
-//         if (peers[userId]) peers[userId].close()
-//     })
-// })
+        this.socket.on('user-disconnected', userId => {
+            if (this.peers[userId]) this.peers[userId].close()
+        })
+    }
 
-// myPeer.on('open', id => {
-//     socket.emit('join-room', ROOM_ID, id)
-// })
-
-// function connectToNewUser(userId, stream) {
-//     peers[userId] = myPeer.call(userId, stream)
-//     const video = document.createElement('video')
-//     peers[userId].on('stream', userVideoStream => {
-//         addVideoStream(video, userVideoStream)
-//     })
-//     peers[userId].on('close', () => {
-//         video.remove()
-//     })
-
-// }
+    connectToNewUser = (userId, stream) => {
+        this.peers[userId] = this.myPeer.call(userId, stream)
+        const video = document.createElement('video')
+        this.peers[userId].on('stream', userVideoStream => {
+            this.addVideoStream(video, userVideoStream)
+        })
+        this.peers[userId].on('close', () => {
+            video.remove()
+        })
+    }
 
 
-// socket.on('user-connected', userId => {
-//     console.log('User connected' + userId)
-// })
+    addVideoStream = (video, stream) => {
+        const videoGrid = document.getElementById('room-container')
+        video.srcObject = stream
+        video.addEventListener('loadedmetadata', () => {
+            video.play()
+        })
+        console.log(videoGrid)
+        videoGrid.append(video)
+    }
 
-
-// function addVideoStream(video, stream) {
-//     video.srcObject = stream
-//     video.addEventListener('loadedmetadata', () => {
-//         video.play()
-//     })
-
-//     videoGrid.append(video)
-// }
+    showMyOwnVideo = () => {
+        const myVideo = document.createElement('video')
+        myVideo.muted = true
+        navigator.mediaDevices.getUserMedia({
+            video: true,
+            audio: true
+        }).then(stream => {
+            this.addVideoStream(myVideo, stream)
+    
+            this.myPeer.on('call', call => {
+                call.answer(stream)
+                const video = document.createElement('video')
+                call.on('stream', userVideoStream => {
+                    this.addVideoStream(video, userVideoStream)
+                })
+            })
+    
+            this.socket.on('user-connected', userId => {
+                console.log('User connected' + userId)
+                this.connectToNewUser(userId, stream)
+            })
+    
+            this.socket.on('user-disconnected', userId => {
+                if (this.peers[userId]) this.peers[userId].close()
+            })
+        })
+    }
+}
 
 export {
-    initSocketConnection
+    Connection
 }
