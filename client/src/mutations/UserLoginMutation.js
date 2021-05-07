@@ -7,7 +7,6 @@ function commitUserLoginMutation(
     password,
     onSuccessCallback
 ) {
-    console.log('????????????????')
     return commitMutation (environment, {
         mutation: graphql`
           mutation UserLoginMutation($email: String!, $password: String!) {
