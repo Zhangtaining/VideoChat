@@ -9,8 +9,9 @@
 # General
 --------------------------------------------------------------*/
 body {
-  background: #fff;
-  color: #2f3138;
+  background: url(../img/hero-bg.jpg) top center;
+  position: relative;
+  align-items: center;
   font-family: "Open Sans", sans-serif;
 }
 
@@ -726,7 +727,8 @@ h1, h2, h3, h4, h5, h6 {
 # Speakers Section
 --------------------------------------------------------------*/
 #speakers {
-  padding: 60px 0 30px 0;
+  padding: 80px 0 30px 0;
+  background: rgba(6, 12, 34, 0.8);
 }
 
 #speakers .speaker {
