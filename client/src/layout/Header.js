@@ -13,7 +13,7 @@ export class Header extends Component {
                         <ul>
                             <li><a class="nav-link" href="#hero">Home</a></li>
                             <li><a class="nav-link scrollto" href="#about">About</a></li>
-                            <li><a class="nav-link scrollto" href="#speakers">Speakers</a></li>
+                            <li><a class="nav-link scrollto" href="/classes">Classes</a></li>
                             <li><a class="nav-link scrollto" href="#schedule">Schedule</a></li>
                             <li><a class="nav-link scrollto" href="#venue">Venue</a></li>
                             <li><a class="nav-link scrollto" href="#hotels">Hotels</a></li>

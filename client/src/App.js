@@ -13,6 +13,7 @@ import SignInComponent from './component/SignIn.component';
 import SignUpComponent from './component/SignUp.component';
 import MainPannel from './component/MainPannel';
 import ClassComponent from './component/class.component';
+import ClassesPage from './component/ClassesPage.component';
 import ClassRoomComponent from './component/classroom.component';
 import graphql from 'babel-plugin-relay/macro';
 import {
@@ -61,6 +62,9 @@ function App() {
                       </Route>
                       <Route path="/home">
                         {!_isLoggedIn() ? <Redirect to="/sign-in" /> : <MainPannel /> }
+                      </Route>
+                      <Route path="/classes">
+                        {!_isLoggedIn() ? <Redirect to="/sign-in" /> : <ClassesPage /> }
                       </Route>
                       <Route path="/class">
                         {!_isLoggedIn() ? <Redirect to="/sign-in" /> : <ClassComponent /> }
