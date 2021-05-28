@@ -5,10 +5,12 @@ import RelayEnvironment from '../RelayEnvironment';
 
 export default class SignInComponent extends Component {
     _confirm = async () => {
+        const user_name_text = document.getElementsByName("user_name")[0].value
+        const password_text = document.getElementsByName("password")[0].value
         commitUserLoginMutation(
             RelayEnvironment,
-            'test@test.com',
-            '12345678',
+            user_name_text,
+            password_text,
             (token, userid) => {
                 this._saveUserData(userid, token);
                 this.props.history.push('/home')
@@ -29,12 +31,12 @@ export default class SignInComponent extends Component {
 
                     <div className="form-group">
                         <br />
-                        <input type="email" className="form-control" placeholder="Enter email" />
+                        <input name="user_name" type="text" className="form-control" placeholder="Enter user name" />
                     </div>
 
                     <div className="form-group">
                         <br />
-                        <input type="password" className="form-control" placeholder="Enter password" />
+                        <input name="password" type="text" className="form-control" placeholder="Enter password" />
                     </div>
                     <br />
                     <button class="log-in" onClick={() => this._confirm()}>Log In</button>

@@ -41,9 +41,10 @@ var root = {
         console.log("trying to sign up...");
         return mutation.signup();
     },
-    login: () => {
+    login: (login_info, _) => {
         console.log("trying to loggin ...");
-        return mutation.login();
+        console.log(login_info)
+        return mutation.login(login_info['email'], login_info['password']);
     },
 }
 

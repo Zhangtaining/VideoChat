@@ -61,13 +61,13 @@ function App() {
                         </div>
                       </Route>
                       <Route path="/home">
-                        {!_isLoggedIn() ? <Redirect to="/sign-in" /> : <MainPannel /> }
+                        <MainPannel />
                       </Route>
                       <Route path="/classes">
-                        {!_isLoggedIn() ? <Redirect to="/sign-in" /> : <ClassesPage /> }
+                        <ClassesPage />
                       </Route>
                       <Route path="/class">
-                        {!_isLoggedIn() ? <Redirect to="/sign-in" /> : <ClassComponent /> }
+                        <ClassComponent />
                       </Route>
                       <Route path="/classroom/:RoomID">
                         <ClassRoomComponent />
