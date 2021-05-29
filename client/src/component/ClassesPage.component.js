@@ -54,14 +54,14 @@ export default class ClassesPage extends Component {
 
     render() {
         return (
-            <div id="speakers">
-                    <div class="container" data-aos="fade-up">
-                        <div class="section-header">
+            <div id="speakers" className="section-with-bg">
+                    <div className="container" data-aos="fade-up">
+                        <div className="section-header">
                             <h2>Event Speakers</h2>
                             <p>Here are some of our speakers</p>
                         </div>
 
-                        <div class="row">
+                        <div className="row">
                             {classes.map(entry => {
                                 return <ClassCard class_image_link={entry.class_image_link} speaker_name={entry.speaker_name} class_title={entry.class_title} />
                             })}

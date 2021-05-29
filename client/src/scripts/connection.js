@@ -23,18 +23,39 @@ function initPeerConnection() {
 class Connection {
     socket;
     myPeer;
-    peers = {}
-    constructor () {
+    peers = {};
+    screenShareCalls = {};
+    constructor (myStream) {
         this.socket = initSocketConnection();
         this.myPeer = initPeerConnection();
+        this.myStream = myStream
     };
 
     setUpConnection = () => {
-        console.log(document);
         this.showMyOwnVideo();
 
         this.myPeer.on('open', id => {
             this.socket.emit('join-room', 123, id)
+        })
+
+        this.socket.on('user-disconnected', userId => {
+            if (this.peers[userId]) this.peers[userId].close()
+        })
+
+        this.myPeer.on('call', call => {
+            call.answer(this.myStream);
+            const video = document.createElement('video')
+            call.on('stream', userVideoStream => {
+                this.addVideoStream(video, userVideoStream)
+            })
+            call.on('close-screen-share', () => {
+                console.log("ending screen sharing");
+                video.remove();
+            })
+        })
+
+        this.socket.on('user-connected', userId => {
+            this.connectToNewUser(userId, this.myStream)
         })
 
         this.socket.on('user-disconnected', userId => {
@@ -53,43 +74,40 @@ class Connection {
         })
     }
 
+    shareScreenToAllUsers = (stream) => {
+        const screenVideo = document.createElement('video');
+        screenVideo.muted = true;
+        this.addVideoStream(screenVideo, stream);
+        
+        for (var user_id in this.peers) {
+            this.screenShareCalls[user_id] = this.myPeer.call(user_id, stream);
+        }
+    }
+
+    removeScreenFromAllUsers = () => {
+        for (var user_id in this.screenShareCalls) {
+            this.screenShareCalls[user_id].emit('close-screen-share')
+        }
+    }
 
     addVideoStream = (video, stream) => {
         const videoGrid = document.getElementById('room-container')
+        video.className="col-lg-4 col-md-6"
         video.srcObject = stream
         video.addEventListener('loadedmetadata', () => {
             video.play()
         })
-        console.log(videoGrid)
+        stream.getVideoTracks()[0].onended = () => {
+            console.log("clear video from screen")
+            video.remove();
+        }
         videoGrid.append(video)
     }
 
     showMyOwnVideo = () => {
         const myVideo = document.createElement('video')
         myVideo.muted = true
-        navigator.mediaDevices.getUserMedia({
-            video: true,
-            audio: true
-        }).then(stream => {
-            this.addVideoStream(myVideo, stream)
-    
-            this.myPeer.on('call', call => {
-                call.answer(stream)
-                const video = document.createElement('video')
-                call.on('stream', userVideoStream => {
-                    this.addVideoStream(video, userVideoStream)
-                })
-            })
-    
-            this.socket.on('user-connected', userId => {
-                console.log('User connected' + userId)
-                this.connectToNewUser(userId, stream)
-            })
-    
-            this.socket.on('user-disconnected', userId => {
-                if (this.peers[userId]) this.peers[userId].close()
-            })
-        })
+        this.addVideoStream(myVideo, this.myStream)
     }
 }
 

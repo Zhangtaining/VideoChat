@@ -1,29 +1,44 @@
 import React, { Component } from 'react' 
+import { GC_USER_ID } from '../constants';
 
-export class Header extends Component {  
+export class Header extends Component {
+    _isLoggedIn() {
+        const user_id = localStorage.getItem(GC_USER_ID);
+        return user_id
+    }
+
+    _getUserInfoNode() {
+        if (this._isLoggedIn) {
+            return (
+                <div className="user">
+                    <img src="../assets/img/speakers/2.jpg" alt="Jack Christiansen" />
+                </div>
+            )
+        } else {
+            return (
+                <a className="buy-tickets" href="/sign-in">Log In</a>
+            )
+        }
+    }
+
     render() {  
         return (
-            <header id="header" class="d-flex align-items-center ">
-                <div class="container-fluid container-xxl d-flex align-items-center">
-                    <div id="logo" class="me-auto">
-                        <a href="index.html" class="scrollto"><img src="assets/img/logo.png" alt="" title="" /></a>
+            <header id="header" className="d-flex align-items-center ">
+                <div className="container-fluid container-xxl d-flex align-items-center">
+                    <div id="logo" className="me-auto">
+                        <a href="index.html"><img src="/assets/img/logo.png" alt="" title="" /></a>
                     </div>
 
-                    <nav id="navbar" class="navbar order-last order-lg-0">
+                    <nav id="navbar" className="navbar order-last order-lg-0">
                         <ul>
-                            <li><a class="nav-link" href="#hero">Home</a></li>
-                            <li><a class="nav-link scrollto" href="#about">About</a></li>
-                            <li><a class="nav-link scrollto" href="/classes">Classes</a></li>
-                            <li><a class="nav-link scrollto" href="#schedule">Schedule</a></li>
-                            <li><a class="nav-link scrollto" href="#venue">Venue</a></li>
-                            <li><a class="nav-link scrollto" href="#hotels">Hotels</a></li>
-                            <li><a class="nav-link scrollto" href="#gallery">Gallery</a></li>
-                            <li><a class="nav-link scrollto" href="#supporters">Sponsors</a></li>
-                            <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
+                            <li><a className="nav-link" href="/">Home</a></li>
+                            <li><a className="nav-link" href="/classes">My Classes</a></li>
+                            <li><a className="nav-link" href="/myschedule">My Schedule</a></li>
+                            <li><a className="nav-link" href="/myprofile">My Profile</a></li>
                         </ul>
-                        <i class="bi bi-list mobile-nav-toggle"></i>
+                        <i className="bi bi-list mobile-nav-toggle"></i>
                     </nav>
-                    <a class="buy-tickets scrollto" href="/sign-in">Log In</a>
+                    {this._getUserInfoNode()}
                 </div>
             </header>
         )

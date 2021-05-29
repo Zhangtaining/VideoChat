@@ -1,7 +1,7 @@
 import './App.css';
 import {
   BrowserRouter as Router,
-  Link,
+  // Link,
   Route,
   Switch,
   Redirect,
@@ -12,21 +12,18 @@ import React from 'react';
 import SignInComponent from './component/SignIn.component';
 import SignUpComponent from './component/SignUp.component';
 import MainPannel from './component/MainPannel';
-import ClassComponent from './component/class.component';
+import ClassComponent from './component/Class.component';
 import ClassesPage from './component/ClassesPage.component';
-import ClassRoomComponent from './component/classroom.component';
-import graphql from 'babel-plugin-relay/macro';
+import ClassRoomComponent from './component/Classroom.component';
+// import graphql from 'babel-plugin-relay/macro';
 import {
   RelayEnvironmentProvider,
-  loadQuery,
-  usePreloadedQuery,
 } from 'react-relay/hooks';
 import RelayEnvironment from './RelayEnvironment';
 import { GC_USER_ID } from './constants';
-import Layout from './layout/Layout';
 import Header from './layout/Header';
-import Footer from './layout/Footer';
 import Welcome from './component/Welcome.component';
+import ScheduleComponent from './component/Schedule.component';
 
 const { Suspense } = React;
 
@@ -49,9 +46,9 @@ function App() {
   return (<Router>
     <div>  
         <div id="wrapper">   
-            <div id="content-wrapper" class="d-flex flex-column">  
-                <div id="content">  
-                    <Header />  
+            <div id="content-wrapper" className="d-flex flex-column">  
+                <div id="content">
+                    <Header />   
                     <Switch>
                       <Route exact path='/' component={Welcome}/>
                       <Route path="/sign-in" component={SignInComponent}/>
@@ -61,17 +58,16 @@ function App() {
                         </div>
                       </Route>
                       <Route path="/home">
-                        <MainPannel />
+                        {!_isLoggedIn() ? <Redirect to="/sign-in" /> : <Welcome /> }
+                      </Route>
+                      <Route path="/myschedule">
+                        {!_isLoggedIn() ? <Redirect to="/sign-in" /> : <ScheduleComponent /> }
                       </Route>
                       <Route path="/classes">
                         <ClassesPage />
                       </Route>
-                      <Route path="/class">
-                        <ClassComponent />
-                      </Route>
-                      <Route path="/classroom/:RoomID">
-                        <ClassRoomComponent />
-                      </Route>
+                      <Route path="/class" component={ClassComponent} />
+                      <Route path="/room/:id" component={ClassRoomComponent} />
                     </Switch> 
                 </div>  
             </div>  
