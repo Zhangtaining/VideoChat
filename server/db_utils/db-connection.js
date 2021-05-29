@@ -4,7 +4,8 @@ const con = mysql.createConnection({
     host: "localhost",
     port: "3306",
     user: "root",
-    password: "19941124"
+    password: "19941124",
+    database : 'video_chat'
 });
 
 con.connect(function(err) {
@@ -16,11 +17,20 @@ function register_user() {
     return undefined;
 }
 
-function user_login() {
-    return true;
+async function user_login(user_name, password, callback) {
+    const query = `SELECT user_id, user_name, email_address FROM USER WHERE user_name = '${user_name}' AND password = '${password}'`;
+    
+    con.query(query, (err, rows) => {
+        if (err) throw err;
+        console.log(rows)
+        return user {
+            
+        }
+    });
+    return res;
 }
 
-export {
+export default {
     register_user,
     user_login
 }

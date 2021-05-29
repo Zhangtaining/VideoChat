@@ -64,7 +64,7 @@ function App() {
                         {!_isLoggedIn() ? <Redirect to="/sign-in" /> : <ScheduleComponent /> }
                       </Route>
                       <Route path="/classes">
-                        {!_isLoggedIn() ? <Redirect to="/sign-in" /> : <ClassesPage /> }
+                        <ClassesPage />
                       </Route>
                       <Route path="/class" component={ClassComponent} />
                       <Route path="/room/:id" component={ClassRoomComponent} />
