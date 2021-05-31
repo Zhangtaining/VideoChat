@@ -43,8 +43,14 @@ var root = {
     },
     login: async (login_info) => {
         console.log("trying to loggin ...");
-        console.log(login_info)
-        return await mutation.login(login_info['email'], login_info['password']);
+        console.log(login_info);
+        try {
+            const res = await mutation.login(login_info['email'], login_info['password']);
+            console.log(res);
+            return res;
+        } catch (e) {
+            console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>" + e);
+        }
     },
 }
 

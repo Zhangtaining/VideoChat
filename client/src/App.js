@@ -11,7 +11,6 @@ import './App.css';
 import React from 'react';
 import SignInComponent from './component/SignIn.component';
 import SignUpComponent from './component/SignUp.component';
-import MainPannel from './component/MainPannel';
 import ClassComponent from './component/Class.component';
 import ClassesPage from './component/ClassesPage.component';
 import ClassRoomComponent from './component/Classroom.component';

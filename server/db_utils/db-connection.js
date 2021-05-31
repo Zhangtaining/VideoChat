@@ -2,6 +2,7 @@ const mysql = require('mysql')
 
 class Database {
     constructor() {
+        console.log("??????????????????????????")
         this.connection = mysql.createConnection({
             host: "localhost",
             port: "3306",
@@ -53,6 +54,4 @@ class Database {
 //     return res;
 // }
 
-export default {
-    Database
-}
+export default Database;

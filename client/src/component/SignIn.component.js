@@ -13,6 +13,7 @@ export default class SignInComponent extends Component {
             password_text,
             (token, userid) => {
                 this._saveUserData(userid, token);
+                console.log("???????????????????");
                 this.props.history.push('/home')
             }
         );
@@ -39,7 +40,7 @@ export default class SignInComponent extends Component {
                         <input name="password" type="text" className="form-control" placeholder="Enter password" />
                     </div>
                     <br />
-                    <button class="log-in" onClick={() => this._confirm()}>Log In</button>
+                    <button className="log-in" onClick={() => this._confirm()}>Log In</button>
                 </div>
             </div>
         );
